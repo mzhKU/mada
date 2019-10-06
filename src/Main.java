@@ -1,9 +1,6 @@
 import prog_01_RSA.RSA;
-import prog_01_RSA.Sieve;
 
 import java.math.BigInteger;
-
-import static java.lang.String.valueOf;
 
 public class Main {
 
@@ -21,12 +18,14 @@ public class Main {
         BigInteger z = rsa.getProductOf(p.subtract(BigInteger.ONE), q.subtract(BigInteger.ONE));
 
         BigInteger e = rsa.findE(z);
+        System.out.println("ggT(e, z): " + e);
         BigInteger d = rsa.findD(e, z);
-
 
         rsa.savePrivateKey(n, d);
         rsa.savePublicKey(n, e);
 
         System.out.println(z);
+
+
     }
 }
