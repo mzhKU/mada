@@ -7,29 +7,21 @@ import static java.lang.String.valueOf;
 
 public class Main {
 
-    private static RSA rsa;
     private static final int P_INIT = 1000000;
     private static final int Q_INIT = 2000000;
 
-    private static BigInteger p;
-    private static BigInteger q;
-    private static BigInteger n;
-    private static BigInteger z;
-    private static BigInteger e;
-    private static BigInteger d;
-
     public static void main(String[] args) {
 
-        rsa = new RSA();
+        RSA rsa = new RSA();
 
-        p = rsa.getProbablePrime(P_INIT);
-        q = rsa.getProbablePrime(Q_INIT);
+        BigInteger p = rsa.getProbablePrime(P_INIT);
+        BigInteger q = rsa.getProbablePrime(Q_INIT);
 
-        n = rsa.getProductOf(p, q);
-        z = rsa.getProductOf(p.subtract(BigInteger.ONE), q.subtract(BigInteger.ONE));
+        BigInteger n = rsa.getProductOf(p, q);
+        BigInteger z = rsa.getProductOf(p.subtract(BigInteger.ONE), q.subtract(BigInteger.ONE));
 
-        e = rsa.findE(z);
-        d = rsa.findD(e, z);
+        BigInteger e = rsa.findE(z);
+        BigInteger d = rsa.findD(e, z);
 
 
         rsa.savePrivateKey(n, d);
