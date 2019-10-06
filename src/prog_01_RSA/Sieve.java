@@ -1,9 +1,13 @@
-package prog_01;
+package prog_01_RSA;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+
+/* Authorship reference:
+   https://www.baeldung.com/java-generate-prime-numbers
+ */
 public class Sieve {
     public static List<Integer> sieve(int n) {
         boolean prime[] = new boolean[n + 1];
