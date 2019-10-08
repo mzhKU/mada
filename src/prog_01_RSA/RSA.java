@@ -14,7 +14,7 @@ public class RSA {
 
     public BigInteger findE(BigInteger z, BigInteger n) {
 
-        // e \in Z_phi(n) => e must be smaller than n.
+        // e element of Z_phi(n) => e must be smaller than n.
         BigInteger e = n.subtract(BigInteger.ONE);
 
         // Find the first e beginning from top that has ggT(e, z) = 1.
@@ -29,19 +29,6 @@ public class RSA {
             }
         }
         return e;
-    }
-
-    public BigInteger findD(BigInteger e, BigInteger z) {
-        // Extended Euklidian Algorithm
-        return BigInteger.valueOf(10);
-    }
-
-    public void savePrivateKey(BigInteger n, BigInteger d) {
-        System.out.println("Saving private key.");
-    }
-
-    public void savePublicKey(BigInteger n, BigInteger e) {
-        System.out.println("Saving public key.");
     }
 
     // Extended Euclidian Algorithm
@@ -82,6 +69,20 @@ public class RSA {
         // System.out.println("EEA: " + x0.multiply(a).add(y0.multiply(b)));
 
         return x0.multiply(a).add(y0.multiply(b));
+    }
+
+    public BigInteger findD(BigInteger e, BigInteger z) {
+        // Extended Euklidian Algorithm
+
+        return BigInteger.valueOf(10);
+    }
+
+    public void savePrivateKey(BigInteger n, BigInteger d) {
+        System.out.println("Saving private key.");
+    }
+
+    public void savePublicKey(BigInteger n, BigInteger e) {
+        System.out.println("Saving public key.");
     }
 
 }
