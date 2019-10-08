@@ -11,14 +11,23 @@ public class Main {
 
         RSA rsa = new RSA();
 
-        BigInteger p = rsa.getProbablePrime(P_INIT);
-        BigInteger q = rsa.getProbablePrime(Q_INIT);
+        // BigInteger p = rsa.getProbablePrime(P_INIT);
+        // BigInteger q = rsa.getProbablePrime(Q_INIT);
+        BigInteger p = BigInteger.valueOf(5);
+        BigInteger q = BigInteger.valueOf(7);
 
         BigInteger n = rsa.getProductOf(p, q);
         BigInteger z = rsa.getProductOf(p.subtract(BigInteger.ONE), q.subtract(BigInteger.ONE));
+        System.out.println("n: " + n + ", z: " + z);
 
-        BigInteger e = rsa.findE(z);
-        System.out.println("ggT(e, z): " + e);
+
+        BigInteger e = rsa.findE(z,n);
+
+
+
+
+
+        System.out.println("ggT(%4s, " + e + " %4s): " + z);
         BigInteger d = rsa.findD(e, z);
 
         rsa.savePrivateKey(n, d);

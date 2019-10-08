@@ -12,11 +12,23 @@ public class RSA {
         return x.multiply(y);
     }
 
-    public BigInteger findE(BigInteger z) {
-        // e = 1
-        // if ggT(e, z) == 1:
-        //    return e;
-        return eea(BigInteger.valueOf(144), BigInteger.valueOf(84));
+    public BigInteger findE(BigInteger z, BigInteger n) {
+
+        // e \in Z_phi(n) => e must be smaller than n.
+        BigInteger e = n.subtract(BigInteger.ONE);
+
+        // Find the first e beginning from top that has ggT(e, z) = 1.
+        // 'compareTo': returns 1 while e > zero.
+        while (e.compareTo(BigInteger.ZERO) == 1) {
+            BigInteger ggT = eea(e, z);
+            System.out.println("e: " + e + ", z: " + z + ", ggT: " + ggT);
+            if(ggT.equals(BigInteger.ONE)) {
+                break;
+            } else {
+                e = e.subtract(BigInteger.ONE);
+            }
+        }
+        return e;
     }
 
     public BigInteger findD(BigInteger e, BigInteger z) {
@@ -47,8 +59,8 @@ public class RSA {
 
         String[] fields = {"ap", "bp", "x0", "y0", "x1", "y1", "q", "r"};
         BigInteger[] vInit  = {ap, bp, x0, y0, x1, y1, q, r};
-        System.out.println(String.format("%4s %4s %4s %4s %4s %4s %4s %4s", fields));
-        System.out.println(String.format("%4s %4s %4s %4s %4s %4s %4s %4s", vInit));
+        // System.out.println(String.format("%4s %4s %4s %4s %4s %4s %4s %4s", fields));
+        // System.out.println(String.format("%4s %4s %4s %4s %4s %4s %4s %4s", vInit));
 
         while (bp != BigInteger.ZERO) {
             BigInteger x0tmp = x0;
@@ -63,10 +75,11 @@ public class RSA {
             x1 = x0tmp.subtract(q.multiply(x1));
             y1 = y0tmp.subtract(q.multiply(y1));
 
-            BigInteger[] v = {ap, bp, x0, y0, x1, y1, q, r};
-            System.out.println(String.format("%4s %4s %4s %4s %4s %4s %4s %4s", v));
+            // BigInteger[] v = {ap, bp, x0, y0, x1, y1, q, r};
+            // System.out.println(String.format("%4s %4s %4s %4s %4s %4s %4s %4s", v));
         }
-        System.out.println("EEA: " + x0.multiply(a).add(y0.multiply(b)));
+        // System.out.println(String.format("%4s %4s %4s %4s %4s %4s %4s %4s", v));
+        // System.out.println("EEA: " + x0.multiply(a).add(y0.multiply(b)));
 
         return x0.multiply(a).add(y0.multiply(b));
     }
