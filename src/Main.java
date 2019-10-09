@@ -9,6 +9,7 @@ public class Main {
 
     // Questions
     // - How to determine 'e'? Is it OK like this?
+    // - How free is one in choosing e?
     // - Is 'd' unique for a given e?
     // - For a given n=p*q, are there multiple values for e, d?
 
@@ -22,7 +23,15 @@ public class Main {
         rsa.setP(BigInteger.valueOf(5));
         rsa.setQ(BigInteger.valueOf(7));
         rsa.setN(rsa.getProductOf(rsa.getP(), rsa.getQ()));
+
         BigInteger phi = rsa.getPhi(rsa.getN());
+
+        BigInteger e = rsa.findE(rsa.getN());
+
+        /*
+        1: choose e
+        2: choose d
+         */
 
         BigInteger d = BigInteger.ONE;
 

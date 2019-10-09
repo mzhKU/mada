@@ -11,36 +11,38 @@ public class RSA {
     private BigInteger q;
     private BigInteger n;
 
-    public BigInteger getN() {
-        return n;
-    }
-
-    public void setN(BigInteger n) {
-        this.n = n;
-    }
-
-
     public BigInteger getProbablePrime(int lowerLimit) {
         return BigInteger.valueOf(lowerLimit).nextProbablePrime();
     }
     public BigInteger getProductOf(BigInteger x, BigInteger y) {
         return x.multiply(y);
     }
-
     public BigInteger getPhi(BigInteger n) {
         BigInteger phi = this.getProductOf(this.getP().subtract(BigInteger.ONE), this.getQ().subtract(BigInteger.ONE));
         return phi;
     }
 
     public BigInteger ggT(BigInteger a, BigInteger b) {
-
-
         Alg eea = new EEA();
         BigInteger[] bezoutCoefficients = eea.bezout(a, b);
         BigInteger x0 = bezoutCoefficients[0];
         BigInteger y0 = bezoutCoefficients[1];
-
         return x0.multiply(a).add(y0.multiply(b));
+    }
+
+    public BigInteger findE(BigInteger n) {
+
+        // m >= 2
+        BigInteger e = BigInteger.ONE.add(BigInteger.ONE);
+
+        // 'compareTo': returns 1 while e > zero.
+        while (e.compareTo(BigInteger.ZERO) == 1) {
+            if (this.ggT(e, this.getPhi(n)).equals(BigInteger.ONE)) {
+                return e;
+            }
+            e = e.add(BigInteger.ONE);
+        }
+        return e;
     }
 
 
@@ -75,7 +77,6 @@ public class RSA {
     public BigInteger getP() {
         return p;
     }
-
     public void setP(BigInteger p) {
         this.p = p;
     }
@@ -83,9 +84,15 @@ public class RSA {
     public BigInteger getQ() {
         return q;
     }
-
     public void setQ(BigInteger q) {
         this.q = q;
+    }
+
+    public BigInteger getN() {
+        return n;
+    }
+    public void setN(BigInteger n) {
+        this.n = n;
     }
 
     public void savePrivateKey(BigInteger n, BigInteger d) {

@@ -38,4 +38,12 @@ class RSATest {
         BigInteger b = BigInteger.valueOf(7);
         assertEquals(rsa.getProductOf(a, b), BigInteger.valueOf(35));
     }
+
+    @Test
+    void testFindE() {
+        rsa.setP(BigInteger.valueOf(5));
+        rsa.setQ(BigInteger.valueOf(7));
+        rsa.setN(rsa.getProductOf(rsa.getP(), rsa.getQ()));
+        assertEquals(BigInteger.valueOf(5), rsa.findE(rsa.getN()));
+    }
 }
