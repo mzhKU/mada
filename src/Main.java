@@ -9,6 +9,8 @@ public class Main {
 
     // Questions
     // - How to determine 'e'? Is it OK like this?
+    // - Is 'd' unique for a given e?
+    // - For a given n=p*q, are there multiple values for e, d?
 
 
     public static void main(String[] args) {
@@ -20,21 +22,17 @@ public class Main {
         BigInteger p = BigInteger.valueOf(5);
         BigInteger q = BigInteger.valueOf(7);
 
+        BigInteger d = BigInteger.ONE;
+
         BigInteger n = rsa.getProductOf(p, q);
         BigInteger z = rsa.getProductOf(p.subtract(BigInteger.ONE), q.subtract(BigInteger.ONE));
         System.out.println("n: " + n + ", z: " + z);
 
-        BigInteger e = rsa.findE(z,n);
+        // BigInteger e = rsa.findE(z,n);
 
-        System.out.println("ggT(e = " + String.format("%4s", e.toString()) + ", z = " + String.format("%4s", z.toString()) + ") = 1");
+        // System.out.println("ggT(e = " + String.format("%4s", e.toString()) + ", z = " + String.format("%4s", z.toString()) + ") = 1");
 
-        BigInteger d = rsa.findD(e, z);
-
-        rsa.savePrivateKey(n, d);
-        rsa.savePublicKey(n, e);
-
-        System.out.println(z);
-
-
+        // rsa.savePrivateKey(n, d);
+        // rsa.savePublicKey(n, e);
     }
 }
