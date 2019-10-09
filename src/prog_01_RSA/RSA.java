@@ -17,9 +17,9 @@ public class RSA {
     public BigInteger getProductOf(BigInteger x, BigInteger y) {
         return x.multiply(y);
     }
-    public BigInteger getPhi(BigInteger n) {
-        BigInteger phi = this.getProductOf(this.getP().subtract(BigInteger.ONE), this.getQ().subtract(BigInteger.ONE));
-        return phi;
+    public BigInteger getZ(BigInteger n) {
+        BigInteger z = this.getProductOf(this.getP().subtract(BigInteger.ONE), this.getQ().subtract(BigInteger.ONE));
+        return z;
     }
 
     public BigInteger ggT(BigInteger a, BigInteger b) {
@@ -37,7 +37,7 @@ public class RSA {
 
         // 'compareTo': returns 1 while e > zero.
         while (e.compareTo(BigInteger.ZERO) == 1) {
-            if (this.ggT(e, this.getPhi(n)).equals(BigInteger.ONE)) {
+            if (this.ggT(e, this.getZ(n)).equals(BigInteger.ONE)) {
                 return e;
             }
             e = e.add(BigInteger.ONE);
@@ -45,33 +45,16 @@ public class RSA {
         return e;
     }
 
+    public BigInteger findD(BigInteger n) {
+        Alg eea = new EEA();
+        BigInteger m = this.getZ(n);
+        BigInteger e = this.findE(n);
+        BigInteger d = eea.bezout(m, e)[1];
+        return d;
 
-    /*
-    public BigInteger findE(BigInteger z, BigInteger n) {
-
-        // Approach: Start with the largest valid e.
-        // e element of Z_phi(n) => e must be smaller than n.
-        BigInteger e = n.subtract(BigInteger.ONE);
-        BigInteger[] v;
-
-        // Find the first e beginning from top that has ggT(e, z) = 1.
-        // 'compareTo': returns 1 while e > zero.
-        while (e.compareTo(BigInteger.ZERO) == 1) {
-            v = eea(e, z);
-            BigInteger x0 = v[2];
-            BigInteger y0 = v[3];
-
-            BigInteger ggT = bezout(x0, n, y0, e);
-
-            if(ggT.equals(BigInteger.ONE)) {
-                break;
-            } else {
-                e = e.subtract(BigInteger.ONE);
-            }
-        }
-        return e;
+        // Kontrolle s. Skript s. 28
+        // System.out.println("d:" + eea.bezout(BigInteger.valueOf(31), BigInteger.valueOf(9))[1]);
     }
-    */
 
 
     public BigInteger getP() {

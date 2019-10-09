@@ -10,6 +10,7 @@ public class Main {
     // Questions
     // - How to determine 'e'? Is it OK like this?
     // - How free is one in choosing e?
+    // - Is EEA needed for finding e?
     // - Is 'd' unique for a given e?
     // - For a given n=p*q, are there multiple values for e, d?
 
@@ -24,9 +25,10 @@ public class Main {
         rsa.setQ(BigInteger.valueOf(7));
         rsa.setN(rsa.getProductOf(rsa.getP(), rsa.getQ()));
 
-        BigInteger phi = rsa.getPhi(rsa.getN());
-
+        BigInteger phi = rsa.getZ(rsa.getN());
         BigInteger e = rsa.findE(rsa.getN());
+        // BigInteger d = rsa.findD(e, rsa.getN());
+
 
         /*
         1: choose e

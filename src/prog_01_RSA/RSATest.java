@@ -10,10 +10,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class RSATest {
 
     RSA rsa;
+    BigInteger five;
+    BigInteger seven;
 
     @BeforeEach
     void setup() {
         rsa = new RSA();
+        five = BigInteger.valueOf(5);
+        seven = BigInteger.valueOf(7);
     }
 
     @Test
@@ -34,16 +38,24 @@ class RSATest {
 
     @Test
     void getProductOf() {
-        BigInteger a = BigInteger.valueOf(5);
-        BigInteger b = BigInteger.valueOf(7);
-        assertEquals(rsa.getProductOf(a, b), BigInteger.valueOf(35));
+        assertEquals(rsa.getProductOf(five, seven), BigInteger.valueOf(35));
     }
 
     @Test
     void testFindE() {
-        rsa.setP(BigInteger.valueOf(5));
-        rsa.setQ(BigInteger.valueOf(7));
+        rsa.setP(five);
+        rsa.setQ(seven);
         rsa.setN(rsa.getProductOf(rsa.getP(), rsa.getQ()));
-        assertEquals(BigInteger.valueOf(5), rsa.findE(rsa.getN()));
+        assertEquals(five, rsa.findE(rsa.getN()));
+    }
+
+    @Test
+    void testFindD() {
+        rsa.setP(five);
+        rsa.setQ(seven);
+        rsa.setN(rsa.getProductOf(rsa.getP(), rsa.getQ()));
+        BigInteger d = rsa.findD(rsa.getN());
+        BigInteger e = rsa.findE(rsa.getN());
+        assertEquals(e.multiply(d).mod(BigInteger.valueOf(31)), BigInteger.valueOf(9).multiply(BigInteger.valueOf(9)).mod(BigInteger.valueOf(31)));
     }
 }
