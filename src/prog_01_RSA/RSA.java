@@ -17,9 +17,9 @@ public class RSA {
     public BigInteger getProductOf(BigInteger x, BigInteger y) {
         return x.multiply(y);
     }
-    public BigInteger getZ(BigInteger n) {
-        BigInteger z = this.getProductOf(this.getP().subtract(BigInteger.ONE), this.getQ().subtract(BigInteger.ONE));
-        return z;
+    public BigInteger getPhi(BigInteger n) {
+        BigInteger phi = this.getProductOf(this.getP().subtract(BigInteger.ONE), this.getQ().subtract(BigInteger.ONE));
+        return phi;
     }
 
     public BigInteger ggT(BigInteger a, BigInteger b) {
@@ -37,7 +37,7 @@ public class RSA {
 
         // 'compareTo': returns 1 while e > zero.
         while (e.compareTo(BigInteger.ZERO) == 1) {
-            if (this.ggT(e, this.getZ(n)).equals(BigInteger.ONE)) {
+            if (this.ggT(e, this.getPhi(n)).equals(BigInteger.ONE)) {
                 return e;
             }
             e = e.add(BigInteger.ONE);
@@ -45,15 +45,20 @@ public class RSA {
         return e;
     }
 
-    public BigInteger findD(BigInteger n) {
+    public BigInteger findD(BigInteger e, BigInteger phi) {
         Alg eea = new EEA();
-        BigInteger m = this.getZ(n);
-        BigInteger e = this.findE(n);
-        BigInteger d = eea.bezout(m, e)[1];
+
+        // [0] is the y0 Bezout coefficient
+        BigInteger d = eea.bezout(e, phi)[0];
+
+        // If the coefficient is < 0, 'compareTo' returns -1.
+        if (d.compareTo(BigInteger.ZERO) == -1) {
+            d = d.add(phi);
+        }
+        // Kontrolle s. Skript s. 28
+        // System.out.println("Kontrolle d:" + eea.bezout(BigInteger.valueOf(31), BigInteger.valueOf(9))[1]);
         return d;
 
-        // Kontrolle s. Skript s. 28
-        // System.out.println("d:" + eea.bezout(BigInteger.valueOf(31), BigInteger.valueOf(9))[1]);
     }
 
 

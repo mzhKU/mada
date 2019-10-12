@@ -54,8 +54,17 @@ class RSATest {
         rsa.setP(five);
         rsa.setQ(seven);
         rsa.setN(rsa.getProductOf(rsa.getP(), rsa.getQ()));
-        BigInteger d = rsa.findD(rsa.getN());
+        BigInteger phi = rsa.getPhi(rsa.getN());
         BigInteger e = rsa.findE(rsa.getN());
-        assertEquals(e.multiply(d).mod(BigInteger.valueOf(31)), BigInteger.valueOf(9).multiply(BigInteger.valueOf(9)).mod(BigInteger.valueOf(31)));
+        BigInteger d = rsa.findD(e, phi);
+        assertEquals((e.multiply(d)).mod(phi), BigInteger.ONE.mod(phi));
+
+        rsa.setP(BigInteger.valueOf(1000000));
+        rsa.setQ(BigInteger.valueOf(2000000));
+        rsa.setN(rsa.getProductOf(rsa.getP(), rsa.getQ()));
+        BigInteger phi2 = rsa.getPhi(rsa.getN());
+        BigInteger e2 = rsa.findE(rsa.getN());
+        BigInteger d2 = rsa.findD(e2, phi2);
+        assertEquals((e2.multiply(d2)).mod(phi2), BigInteger.ONE.mod(phi2));
     }
 }
