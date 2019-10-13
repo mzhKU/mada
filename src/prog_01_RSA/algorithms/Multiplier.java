@@ -3,15 +3,18 @@ package prog_01_RSA.algorithms;
 import java.math.BigInteger;
 
 public class Multiplier {
-    public BigInteger fastExp(int x, BigInteger e, BigInteger n) {
+    public BigInteger fastExp(BigInteger x, BigInteger e, BigInteger n) {
 
         boolean log = false;
 
-        String binaryE = Integer.toBinaryString(Integer.valueOf(e.toString()));
+        // String binaryE = Integer.toBinaryString(Integer.valueOf(e.toString()));
+
+        String binaryE = e.toString(2);
+
 
         BigInteger j = BigInteger.valueOf(binaryE.length());
         BigInteger h = BigInteger.ONE;
-        BigInteger k = BigInteger.valueOf(x);
+        BigInteger k = x;
 
         if (log) {
             String[] fieldsLabels = {"i", "h", "k"};

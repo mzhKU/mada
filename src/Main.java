@@ -52,19 +52,22 @@ public class Main {
 
         // Write secret key.
         try {
-            Writer.writeKey("sk.txt", rsa.getN(), d);
+            Writer.writeKey("my-sk.txt", rsa.getN(), d);
         }  catch (IOException ex){
             System.out.println("Key not written.");
         }
 
         // Write private key.
         try {
-            Writer.writeKey("pk.txt", rsa.getN(), e);
+            Writer.writeKey("my-pk.txt", rsa.getN(), e);
         } catch (IOException ex){
             System.out.println("Key not written.");
         }
 
         rsa.encode(fn);
+
+        // Tasks 3 & 4
+        rsa.decode();
 
         // rsa.savePrivateKey(n, d);
         // rsa.savePublicKey(n, e);

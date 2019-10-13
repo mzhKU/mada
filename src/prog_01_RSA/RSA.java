@@ -4,9 +4,7 @@ import prog_01_RSA.algorithms.Alg;
 import prog_01_RSA.algorithms.EEA;
 import prog_01_RSA.algorithms.Multiplier;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -70,20 +68,22 @@ public class RSA {
 
     public void encode(String fn) {
         Multiplier multiplier = new Multiplier();
-        int asciiOfChar;
+        BigInteger asciiOfChar;
         BigInteger encodedSymbol;
         try {
-            String pk = Reader.readFile("pk.txt");
-            BigInteger n = BigInteger.valueOf(Long.parseLong(pk.split(" ")[0]));
-            BigInteger e = BigInteger.valueOf(Long.parseLong(pk.split(" ")[1]));
+            String pk = Reader.readFile("my-pk.txt");
+            // Remove parenthesis '(' and ')'
+            pk = pk.substring(1, pk.length()-1);
+
+            BigInteger n = BigInteger.valueOf(Long.parseLong(pk.split(",")[0]));
+            BigInteger e = BigInteger.valueOf(Long.parseLong(pk.split(",")[1]));
             String msg = Reader.readFile(fn);
 
-            BufferedWriter w = new BufferedWriter(new FileWriter("chiffre.txt"));
+            BufferedWriter w = new BufferedWriter(new FileWriter("my-chiffre.txt"));
 
             for(int i = 0; i < msg.length(); i++) {
-                asciiOfChar = (int) msg.charAt(i);
+                asciiOfChar = BigInteger.valueOf((int) msg.charAt(i));
                 encodedSymbol = multiplier.fastExp(asciiOfChar, e, n);
-                System.out.println("Original symbol: " + asciiOfChar + ", Encoded symbol: " + encodedSymbol);
                 w.write(encodedSymbol.toString() + ",");
             }
 
@@ -92,6 +92,40 @@ public class RSA {
             System.out.println(msg);
         } catch (IOException ex) {
             System.out.println("Private key could not be read: " + ex);
+        }
+    }
+
+    // Decode the given chiffre file with the given secret key.
+    public void decode() {
+        Multiplier m = new Multiplier();
+        try {
+            BufferedReader r = new BufferedReader(new FileReader("chiffre.txt"));
+            String chiffre = r.readLine();
+            ArrayList<String> symbols = new ArrayList<>();
+            for (String symbol : chiffre.split(",")) {
+                symbols.add(symbol);
+            }
+
+            String pk = Reader.readFile("sk.txt");
+            pk = pk.substring(1, pk.length()-1);
+
+            BigInteger n = new BigInteger(pk.split(",")[0]);
+            BigInteger d = new BigInteger(pk.split(",")[1]);
+
+            // ASCII Codes
+            ArrayList<BigInteger> result = new ArrayList<>();
+
+            for (String s : symbols) {
+                BigInteger x = new BigInteger(s);
+                result.add(m.fastExp(x, d, n));
+            }
+
+            for(BigInteger asciiCode : result) {
+                System.out.println((char) asciiCode.intValue());
+            }
+
+        } catch (IOException ex) {
+            System.out.println(ex);
         }
     }
 

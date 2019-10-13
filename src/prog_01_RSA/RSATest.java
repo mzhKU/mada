@@ -24,13 +24,18 @@ class RSATest {
 
     @Test
     void testFastExp() {
-        int x = 7;
+        BigInteger x = BigInteger.valueOf(7);
         BigInteger e = BigInteger.valueOf(13);
         BigInteger n = BigInteger.valueOf(11);
 
         Multiplier m = new Multiplier();
 
         assertEquals(BigInteger.valueOf(2), m.fastExp(x, e, n));
+    }
+
+    @Test
+    void testDecode() {
+        rsa.decode();
     }
 
 
