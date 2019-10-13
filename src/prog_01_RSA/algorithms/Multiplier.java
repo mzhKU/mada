@@ -5,7 +5,7 @@ import java.math.BigInteger;
 public class Multiplier {
     public BigInteger fastExp(int x, BigInteger e, BigInteger n) {
 
-        boolean log = true;
+        boolean log = false;
 
         String binaryE = Integer.toBinaryString(Integer.valueOf(e.toString()));
 
@@ -27,7 +27,7 @@ public class Multiplier {
         // Note: The highest index value refers to the lowest significant digit.
         //       -> iterating over the binary representation from end to start.
         while (i > 0) {
-            System.out.println(String.format("%4s %4s %10s %10s", i-1, binaryE.charAt(i-1), h, k));
+            // System.out.println(String.format("%4s %4s %10s %10s", i-1, binaryE.charAt(i-1), h, k));
             if (Character.getNumericValue(binaryE.charAt(i-1)) == 1) {
                 h = (h.multiply(k)).mod(n);
             }

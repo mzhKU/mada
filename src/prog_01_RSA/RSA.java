@@ -4,8 +4,12 @@ import prog_01_RSA.algorithms.Alg;
 import prog_01_RSA.algorithms.EEA;
 import prog_01_RSA.algorithms.Multiplier;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.math.BigInteger;
+import java.util.ArrayList;
 
 public class RSA {
 
@@ -74,11 +78,16 @@ public class RSA {
             BigInteger e = BigInteger.valueOf(Long.parseLong(pk.split(" ")[1]));
             String msg = Reader.readFile(fn);
 
+            BufferedWriter w = new BufferedWriter(new FileWriter("chiffre.txt"));
+
             for(int i = 0; i < msg.length(); i++) {
                 asciiOfChar = (int) msg.charAt(i);
                 encodedSymbol = multiplier.fastExp(asciiOfChar, e, n);
-                // System.out.println("Original symbol: " + asciiOfChar + ", Encoded symbol: " + encodedSymbol);
+                System.out.println("Original symbol: " + asciiOfChar + ", Encoded symbol: " + encodedSymbol);
+                w.write(encodedSymbol.toString() + ",");
             }
+
+            w.close();
 
             System.out.println(msg);
         } catch (IOException ex) {

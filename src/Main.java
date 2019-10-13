@@ -6,7 +6,7 @@ import java.math.BigInteger;
 
 public class Main {
 
-    private static boolean fast = true;
+    private static boolean fast = false;
     private static boolean log = true;
 
     // Questions
