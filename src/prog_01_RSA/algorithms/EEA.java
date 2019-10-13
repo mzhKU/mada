@@ -6,7 +6,7 @@ public class EEA implements Alg {
 
     private final BigInteger[] bezoutCoefficients = {BigInteger.ONE, BigInteger.ZERO};
 
-    private Boolean log = true;
+    private Boolean log = false;
 
     @Override
     public BigInteger[] bezout(BigInteger a, BigInteger b) {

@@ -1,10 +1,13 @@
 import prog_01_RSA.RSA;
+import prog_01_RSA.Writer;
 
+import java.io.IOException;
 import java.math.BigInteger;
 
 public class Main {
 
-    private static boolean fast = false;
+    private static boolean fast = true;
+    private static boolean log = true;
 
     // Questions
     // - How to determine 'e'? Is it OK like this?
@@ -17,6 +20,8 @@ public class Main {
     public static void main(String[] args) {
         int p_init;
         int q_init;
+
+        String fn = "text.txt";
 
         if (fast) {
             p_init = 4;
@@ -38,11 +43,28 @@ public class Main {
         BigInteger e = rsa.findE(rsa.getN());
         BigInteger d = rsa.findD(e, phi);
 
-        System.out.println("phi: " + phi);
-        System.out.println("e: " + e);
-        System.out.println("d: " + d);
+        if (log) {
+            System.out.println("phi: " + phi);
+            System.out.println("n: " + rsa.getN());
+            System.out.println("e: " + e);
+            System.out.println("d: " + d);
+        }
 
+        // Write secret key.
+        try {
+            Writer.writeKey("sk.txt", rsa.getN(), d);
+        }  catch (IOException ex){
+            System.out.println("Key not written.");
+        }
 
+        // Write private key.
+        try {
+            Writer.writeKey("pk.txt", rsa.getN(), e);
+        } catch (IOException ex){
+            System.out.println("Key not written.");
+        }
+
+        rsa.encode(fn);
 
         // rsa.savePrivateKey(n, d);
         // rsa.savePublicKey(n, e);

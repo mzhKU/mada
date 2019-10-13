@@ -2,7 +2,9 @@ package prog_01_RSA;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import prog_01_RSA.algorithms.Multiplier;
 
+import java.io.*;
 import java.math.BigInteger;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,6 +20,48 @@ class RSATest {
         rsa = new RSA();
         five = BigInteger.valueOf(5);
         seven = BigInteger.valueOf(7);
+    }
+
+    @Test
+    void testFastExp() {
+        int x = 7;
+        BigInteger e = BigInteger.valueOf(13);
+        BigInteger n = BigInteger.valueOf(11);
+
+        Multiplier m = new Multiplier();
+
+        assertEquals(BigInteger.valueOf(2), m.fastExp(x, e, n));
+    }
+
+
+    @Test
+    void testConvertCharacter() {
+        String testString;
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("testFile.txt"));
+            writer.write("abc");
+            writer.close();
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("testFile.txt"));
+            testString = reader.readLine();
+            reader.close();
+
+            char currentChar;
+            int asciiOfChar;
+
+            int[] correctChars = {97, 98, 99};
+
+            for(int i = 0; i<testString.length(); i++) {
+                currentChar = testString.charAt(i);
+                asciiOfChar = (int) currentChar;
+                assertEquals(asciiOfChar, correctChars[i]);
+            }
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
     }
 
     @Test

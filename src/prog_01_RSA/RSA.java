@@ -2,7 +2,9 @@ package prog_01_RSA;
 
 import prog_01_RSA.algorithms.Alg;
 import prog_01_RSA.algorithms.EEA;
+import prog_01_RSA.algorithms.Multiplier;
 
+import java.io.IOException;
 import java.math.BigInteger;
 
 public class RSA {
@@ -62,6 +64,28 @@ public class RSA {
     }
 
 
+    public void encode(String fn) {
+        Multiplier multiplier = new Multiplier();
+        int asciiOfChar;
+        BigInteger encodedSymbol;
+        try {
+            String pk = Reader.readFile("pk.txt");
+            BigInteger n = BigInteger.valueOf(Long.parseLong(pk.split(" ")[0]));
+            BigInteger e = BigInteger.valueOf(Long.parseLong(pk.split(" ")[1]));
+            String msg = Reader.readFile(fn);
+
+            for(int i = 0; i < msg.length(); i++) {
+                asciiOfChar = (int) msg.charAt(i);
+                encodedSymbol = multiplier.fastExp(asciiOfChar, e, n);
+                // System.out.println("Original symbol: " + asciiOfChar + ", Encoded symbol: " + encodedSymbol);
+            }
+
+            System.out.println(msg);
+        } catch (IOException ex) {
+            System.out.println("Private key could not be read: " + ex);
+        }
+    }
+
     public BigInteger getP() {
         return p;
     }
@@ -81,12 +105,5 @@ public class RSA {
     }
     public void setN(BigInteger n) {
         this.n = n;
-    }
-
-    public void savePrivateKey(BigInteger n, BigInteger d) {
-        System.out.println("Saving private key.");
-    }
-    public void savePublicKey(BigInteger n, BigInteger e) {
-        System.out.println("Saving public key.");
     }
 }
