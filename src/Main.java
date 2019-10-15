@@ -8,6 +8,8 @@ public class Main {
 
     private static boolean fast = false;
     private static boolean log = true;
+    private static final String SECRET_KEY = "my-sk.txt";
+    private static final String PUBLIC_KEY = "my-pk.txt";
 
     // Questions
     // - How to determine 'e'? Is it OK like this?
@@ -52,14 +54,14 @@ public class Main {
 
         // Write secret key.
         try {
-            Writer.writeKey("my-sk.txt", rsa.getN(), d);
+            Writer.writeKey(SECRET_KEY, rsa.getN(), d);
         }  catch (IOException ex){
             System.out.println("Key not written.");
         }
 
         // Write private key.
         try {
-            Writer.writeKey("my-pk.txt", rsa.getN(), e);
+            Writer.writeKey(PUBLIC_KEY, rsa.getN(), e);
         } catch (IOException ex){
             System.out.println("Key not written.");
         }
