@@ -3,9 +3,9 @@ package prog_01_RSA;
 import prog_01_RSA.algorithms.Alg;
 import prog_01_RSA.algorithms.EEA;
 import prog_01_RSA.algorithms.Multiplier;
+import utils.Reader;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
@@ -71,13 +71,13 @@ public class RSA {
         BigInteger asciiOfChar;
         BigInteger encodedSymbol;
         try {
-            String pk = Reader.readFile("my-pk.txt");
+            String pk = utils.Reader.readFile("my-pk.txt");
             // Remove parenthesis '(' and ')'
             pk = pk.substring(1, pk.length()-1);
 
             BigInteger n = BigInteger.valueOf(Long.parseLong(pk.split(",")[0]));
             BigInteger e = BigInteger.valueOf(Long.parseLong(pk.split(",")[1]));
-            String msg = Reader.readFile(fn);
+            String msg = utils.Reader.readFile(fn);
 
             BufferedWriter w = new BufferedWriter(new FileWriter("my-chiffre.txt"));
 

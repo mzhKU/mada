@@ -1,4 +1,4 @@
-package prog_01_RSA;
+package utils;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
