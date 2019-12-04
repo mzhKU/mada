@@ -9,43 +9,44 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.groupingBy;
+
 public class Huffman {
 
-    private Map<String, Long> huffman;
-    private static StringBuilder lines;
+    private Map<Integer, Long> huffman;
 
     public Huffman() {
         this.huffman = new HashMap<>();
     }
 
-    public Map<String, Long> charIntMap(String input) {
-        return this.huffman;
+    public void compress(String inputFileName) {
+        parse(getFilePath(inputFileName));
     }
 
-    public void compress(String inputFile) {
-        String current = System.getProperty("user.dir");
-        setInput(inputFile);
-        getRelativeOccurence();
-    }
-
-    public void getRelativeOccurence() {
-        Stream charStream = Arrays.stream(lines.toString().toLowerCase().split(""));
-        huffman = (Map<String, Long>) charStream.collect(Collectors.groupingBy(c -> c, Collectors.counting()));
-        System.out.println(lines.toString());
-        System.out.println(huffman);
-    }
-
-    public void setInput(String inputFile) {
-        String current = System.getProperty("user.dir");
-        Path inputFilePath  = Paths.get(current, "src", "testInputs", inputFile);
-        try(BufferedReader r = new BufferedReader(new FileReader(String.valueOf(inputFilePath)))) {
+    public void parse(String inputFilePath) {
+        try(BufferedReader r = new BufferedReader(new FileReader(inputFilePath))) {
             String line;
-            lines = new StringBuilder();
             while ((line=r.readLine()) != null) {
-                lines.append(line);
+                System.out.println(line);
+                charOccuranceInLine(line);
             }
         } catch (IOException e) {
             System.out.println(e);
         }
+    }
+
+    private void charOccuranceInLine(String line) {
+        huffman = Stream.of(line.split(""))
+                .map(s -> s.charAt(0))
+                .map(c -> Integer.valueOf((int) c))
+                .collect(Collectors.groupingBy(i -> i, Collectors.counting()));
+        System.out.println(huffman);
+    }
+
+    private String getFilePath(String inputFileName) {
+        String current = System.getProperty("user.dir");
+        Path inputFilePath = Paths.get(current, "src", "testInputs", inputFileName);
+        return String.valueOf(inputFilePath);
     }
 }

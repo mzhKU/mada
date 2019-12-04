@@ -19,6 +19,7 @@ public class DriverHoffman {
         huffman = new Huffman();
         huffman.compress(inputFile01);
 
+
         // 1: Read an ASCII encoded file
 
         // 2: Generate character counting table
