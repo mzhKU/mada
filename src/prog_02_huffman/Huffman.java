@@ -3,6 +3,7 @@ package prog_02_huffman;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -24,13 +25,11 @@ public class Huffman {
         parse(getFilePath(inputFileName));
     }
 
-    public void parse(String inputFilePath) {
-        try(BufferedReader r = new BufferedReader(new FileReader(inputFilePath))) {
-            String line;
-            while ((line=r.readLine()) != null) {
-                System.out.println(line);
-                charOccuranceInLine(line);
-            }
+    public void parse(Path inputFilePath) {
+        String content = "";
+        try {
+            content = new String(Files.readAllBytes(inputFilePath));
+            charOccuranceInLine(content);
         } catch (IOException e) {
             System.out.println(e);
         }
@@ -44,9 +43,9 @@ public class Huffman {
         System.out.println(huffman);
     }
 
-    private String getFilePath(String inputFileName) {
+    private Path getFilePath(String inputFileName) {
         String current = System.getProperty("user.dir");
         Path inputFilePath = Paths.get(current, "src", "testInputs", inputFileName);
-        return String.valueOf(inputFilePath);
+        return inputFilePath;
     }
 }
