@@ -19,6 +19,11 @@ public class Huffman {
 
     public Huffman() {
         this.huffman = new HashMap<>();
+
+        // Populate the huffman Map initialy with keys and zeroes.
+        for (int i = 0; i<128; i++) {
+            huffman.put(Integer.valueOf(i), 0L);
+        }
     }
 
     public void compress(String inputFileName) {
@@ -29,17 +34,24 @@ public class Huffman {
         String content = "";
         try {
             content = new String(Files.readAllBytes(inputFilePath));
-            charOccuranceInLine(content);
+            charOccurrenceInLine(content);
         } catch (IOException e) {
             System.out.println(e);
         }
     }
 
-    private void charOccuranceInLine(String line) {
-        huffman = Stream.of(line.split(""))
+    private void charOccurrenceInLine(String line) {
+        // Count character occurrence and store in tmp map.
+        Map<Integer, Long> tmp = new HashMap<>();
+        tmp = Stream.of(line.split(""))
                 .map(s -> s.charAt(0))
                 .map(c -> Integer.valueOf((int) c))
-                .collect(Collectors.groupingBy(i -> i, Collectors.counting()));
+                .collect(groupingBy(i -> i, counting()));
+
+        // Set the values in the huffman map.
+        for(Integer k : tmp.keySet()) {
+            huffman.put(k, tmp.get(k));
+        }
         System.out.println(huffman);
     }
 
