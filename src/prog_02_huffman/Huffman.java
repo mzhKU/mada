@@ -15,14 +15,15 @@ import static java.util.stream.Collectors.groupingBy;
 
 public class Huffman {
 
-    private Map<Integer, Long> huffman;
+    // Keep relative occurrence of ASCII code.
+    private Map<Integer, Double> huffman;
 
     public Huffman() {
         this.huffman = new HashMap<>();
 
         // Populate the huffman Map initialy with keys and zeroes.
         for (int i = 0; i<128; i++) {
-            huffman.put(Integer.valueOf(i), 0L);
+            huffman.put(Integer.valueOf(i), 0.0);
         }
     }
 
@@ -40,17 +41,17 @@ public class Huffman {
         }
     }
 
-    private void charOccurrenceInLine(String line) {
+    private void charOccurrenceInLine(String content) {
         // Count character occurrence and store in tmp map.
         Map<Integer, Long> tmp = new HashMap<>();
-        tmp = Stream.of(line.split(""))
+        tmp = Stream.of(content.split(""))
                 .map(s -> s.charAt(0))
                 .map(c -> Integer.valueOf((int) c))
                 .collect(groupingBy(i -> i, counting()));
 
         // Set the values in the huffman map.
         for(Integer k : tmp.keySet()) {
-            huffman.put(k, tmp.get(k));
+            huffman.put(k, Double.valueOf(tmp.get(k))/content.length());
         }
         System.out.println(huffman);
     }
