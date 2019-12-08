@@ -16,7 +16,7 @@ public class DriverHuffman {
 
     public static void main(String[] args) {
 
-
+        // Tasks 1 - 8.
         // Sort the occurrences for lowest values first such that
         // the lowest frequencies can be selected.
         System.out.println("-----------------------------");
@@ -31,12 +31,17 @@ public class DriverHuffman {
         } catch (IOException e) {
             System.out.println("Could not write \"dec_tab.txt\".");
         }
-        huffman.encode();
+        try {
+            huffman.encode();
+        } catch (IOException e) {
+            System.out.println("Could not write byte file \"output.dat\".");
+        }
 
-
-
-
-
+        try {
+            huffman.compareCompression();
+        } catch (IOException e) {
+            System.out.println("Could not read file.");
+        }
 
 
 
@@ -44,22 +49,22 @@ public class DriverHuffman {
         // System.out.println("-----------------------------");
         // System.out.println("READING COMPRESSED DATA");
         // System.out.println("-----------------------------");
-        // File file = new File("src/testInputs/output-mada.dat");
-        // byte[] bFile = new byte[(int) file.length()];
-        // try {
-        //     FileInputStream fis = new FileInputStream(file);
-        //     int currentByte;
-        //     int i = 0;
-        //     while ((currentByte = fis.read()) != -1) {
-        //         bFile[i] = (byte) currentByte;
-        //         System.out.println("Current byte: " + currentByte + ", " + Integer.toBinaryString(bFile[i]));
-        //         i++;
-        //     }
-        //     fis.close();
-        // } catch (FileNotFoundException e) {
-        //     e.printStackTrace();
-        // } catch (IOException e) {
-        //     e.printStackTrace();
-        // }
+        File file = new File("src/testInputs/output-mada.dat");
+        byte[] bFile = new byte[(int) file.length()];
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            int currentByte;
+            int i = 0;
+            while ((currentByte = fis.read()) != -1) {
+                bFile[i] = (byte) currentByte;
+                System.out.println("Current byte: " + currentByte + ", " + Integer.toBinaryString(bFile[i]));
+                i++;
+            }
+            fis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

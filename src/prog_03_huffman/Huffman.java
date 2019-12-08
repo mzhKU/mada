@@ -1,8 +1,7 @@
 package prog_03_huffman;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.awt.image.DataBufferDouble;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -49,31 +48,50 @@ public class Huffman {
         System.out.println("end");
     }
 
-    public void encode() {
+    public void compareCompression() throws IOException {
+        File fileOriginal = new File("testInputs/testInput01");
+        int originalFileSize = 0;
+
+        FileInputStream fis = new FileInputStream(fileOriginal);
+        int i = 0;
+        int currentByte;
+        while ((currentByte = fis.read()) != -1) {
+            originalFileSize += 1;
+            i++;
+        }
+        System.out.println("Original File Size [bytes]: " + originalFileSize);
+
+        File compressed = new File("/src/prog_03_huffman/output.dat");
+        long compressedFileSize = compressed.length();
+        System.out.println("Compressed File Size [bytes]: " + compressedFileSize);
+
+        System.out.println("Compression Factor: " + compressedFileSize / originalFileSize);
+    }
+
+    public void encode() throws IOException {
         String bitString = "";
         for (String c : content.split("")) {
             String symbol = occurrenceBits.get(c);
             bitString += symbol;
         }
-        int remaining = (8 - bitString.length() % 8);
-        System.out.println(bitString);
-        System.out.println("length: " + bitString.length());
-        System.out.println("rem: " + remaining);
 
+        // Add a '1' to the end of the bitstring.
         bitString = bitString + "1";
-        System.out.println(bitString);
-        remaining = (8 - bitString.length() % 8);
-        System.out.println("length: " + bitString.length());
-        System.out.println("rem: " + remaining);
 
+        // Fill up with '0' until the length is a multiple of 8.
         while (bitString.length() % 8 > 0) {
             bitString = bitString + "0";
-            // remaining = (8 - bitString.length() % 8);
-            System.out.println("rem: " + remaining);
         }
-        System.out.println(bitString);
-        System.out.println("length: " + bitString.length());
-        System.out.println("rem: " + remaining);
+        System.out.println("Bitstring: " + bitString);
+
+        BufferedWriter writer = new BufferedWriter((new FileWriter("src/prog_03_huffman/output.dat")));
+        for (int i=0; i<bitString.length(); i += 8) {
+            String subString = bitString.substring(i, i+8);
+            Integer b = Integer.parseInt(subString, 2);
+            writer.write(String.valueOf(b));
+            System.out.println("b: " + b);
+        }
+        writer.close();
     }
 
     public void buildCode() {
