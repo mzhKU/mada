@@ -26,7 +26,11 @@ public class DriverHuffman {
         huffman.countOccurrences(inputFile01);
         huffman.sortOccurrences();
         huffman.buildCode();
-        huffman.saveCode();
+        try {
+            huffman.saveCode();
+        } catch (IOException e) {
+            System.out.println("Could not write \"dec_tab.txt\".");
+        }
 
 
 

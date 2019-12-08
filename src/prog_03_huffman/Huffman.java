@@ -1,5 +1,7 @@
 package prog_03_huffman;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,11 +20,19 @@ public class Huffman {
         this.entryList = new ArrayList<>();
     }
 
-    public void saveCode() {
+    public void saveCode() throws IOException {
         Iterator i = occurrenceBits.keySet().iterator();
+        BufferedWriter writer = new BufferedWriter((new FileWriter("src/prog_03_huffman/dec_tab.txt")));
         while (i.hasNext()) {
-            i.next();
+            String m = String.valueOf(i.next());
+            String code = String.valueOf((int) m.charAt(0));
+            System.out.println("code: " + code);
+            writer.write(code);
+            writer.write(":");
+            writer.write(occurrenceBits.get(m));
+            writer.write("-");
         }
+        writer.close();
         System.out.println("end");
     }
 
