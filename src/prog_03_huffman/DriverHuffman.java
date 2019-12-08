@@ -31,6 +31,7 @@ public class DriverHuffman {
         } catch (IOException e) {
             System.out.println("Could not write \"dec_tab.txt\".");
         }
+        huffman.encode();
 
 
 

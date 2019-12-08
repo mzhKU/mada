@@ -12,6 +12,11 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.*;
 
 public class Huffman {
+
+    // The original content of the file to compress.
+    private String content;
+    private String compressed;
+
     Map<String, Double> occurrence = new HashMap<>();
     Map<String, String> occurrenceBits = new HashMap<>();
     List<Map<String, Double>> entryList;
@@ -21,6 +26,14 @@ public class Huffman {
     }
 
     public void saveCode() throws IOException {
+
+        // Input example:
+        // abccccdd
+        // asdfasdsdfdsf
+
+        // Huffman code:
+        // 97:110-98:0101-115:00-99:111-100:10-102:011-10:0100-
+
         Iterator i = occurrenceBits.keySet().iterator();
         BufferedWriter writer = new BufferedWriter((new FileWriter("src/prog_03_huffman/dec_tab.txt")));
         while (i.hasNext()) {
@@ -34,6 +47,33 @@ public class Huffman {
         }
         writer.close();
         System.out.println("end");
+    }
+
+    public void encode() {
+        String bitString = "";
+        for (String c : content.split("")) {
+            String symbol = occurrenceBits.get(c);
+            bitString += symbol;
+        }
+        int remaining = (8 - bitString.length() % 8);
+        System.out.println(bitString);
+        System.out.println("length: " + bitString.length());
+        System.out.println("rem: " + remaining);
+
+        bitString = bitString + "1";
+        System.out.println(bitString);
+        remaining = (8 - bitString.length() % 8);
+        System.out.println("length: " + bitString.length());
+        System.out.println("rem: " + remaining);
+
+        while (bitString.length() % 8 > 0) {
+            bitString = bitString + "0";
+            // remaining = (8 - bitString.length() % 8);
+            System.out.println("rem: " + remaining);
+        }
+        System.out.println(bitString);
+        System.out.println("length: " + bitString.length());
+        System.out.println("rem: " + remaining);
     }
 
     public void buildCode() {
@@ -105,16 +145,16 @@ public class Huffman {
         parse(getFilePath(inputFile));
     }
 
+
     public void parse(Path inputFilePath) {
-        String content = "";
         try {
             content = new String(Files.readAllBytes(inputFilePath));
-            System.out.println("Content: " + content);
             charOccurrence(content);
         } catch (IOException e) {
             System.out.println(e);
         }
     }
+
     private void charOccurrence(String content) {
         // Count character occurrence and store in tmp map.
         Map<String, Long> tmp = new HashMap<>();
